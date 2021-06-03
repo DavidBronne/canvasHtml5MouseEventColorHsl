@@ -16,15 +16,19 @@
   ctx.strokeStyle = 'BADA55';
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
 
   let isDrawing = false;
   let lastX = 0;
   let lastY = 0;
+  let hue = 0;
+  let directionPosotive = true
 
   function draw (event) {
     if (!isDrawing) return;
     console.log(`event`, event)
-
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
+    
     ctx.beginPath();
     ctx.moveTo(lastX, lastY)
     ctx.lineTo(event.offsetX , event.offsetY )
@@ -32,7 +36,21 @@
     
     lastX = event.offsetX
     lastY = event.offsetY
-   
+    hue++
+
+    if (hue >= 360) {
+      hue=0
+    }
+
+    if ( ctx.lineWidth >= 100 || ctx.lineWidth <=1 ) {
+      directionPosotive = !directionPosotive
+    }
+    
+    if (directionPosotive) {
+      ctx.lineWidth++
+    } else {
+      ctx.lineWidth--
+    }
   }
   window.addEventListener('mousedown', (event)=> {
     isDrawing=true
